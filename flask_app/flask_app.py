@@ -58,8 +58,8 @@ def upload_file():
             if video_seconds < 10:
                 flash('Error: Video is too short.', 'failed')
                 return redirect(request.url)
-            elif video_seconds > 20:
-                flash('Error: Video is too long.', 'failed')
+            elif video_seconds > 60:
+                flash('Error: Video is too long. Please trim your video.', 'failed')
                 return redirect(request.url)
 
             trim_video()

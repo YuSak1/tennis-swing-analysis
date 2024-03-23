@@ -461,6 +461,30 @@ def pose_detection():
     # Save as CSV
     df_swing.to_csv('data/CSV/pose_detection.csv')
 
+    # Create plot
+    fig = plt.figure(figsize=(20, 5))
+    df_swing_x = df_swing.loc[:, ['left_shoulder_x', 'right_shoulder_x',
+                                  'left_elbow_x', 'right_elbow_x', 'left_wrist_x', 'left_wrist_x',
+                                  'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x',
+                                  'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
+    df_swing_y = df_swing.loc[:, ['left_shoulder_y', 'right_shoulder_y',
+                                  'left_elbow_y', 'right_elbow_y', 'left_wrist_y', 'left_wrist_y',
+                                  'right_wrist_y', 'left_hip_y', 'right_hip_y', 'left_knee_y',
+                                  'right_knee_y', 'left_ankle_y', 'right_ankle_y']]
+
+    # Plot coordinate of y-axis
+    plt.plot(df_swing_x)
+    plt.title("x axis")
+    plt.xlabel("Time")
+    plt.ylabel("Coordinate")
+    plt.savefig("static/upload/plot_x.png")
+    # Plot coordinate of y-axis
+    plt.plot(df_swing_y)
+    plt.title("y-axis")
+    plt.xlabel("Time")
+    plt.ylabel("Coordinate")
+    plt.savefig("static/upload/plot_y.png")
+
     print("Pose detection completed.")
 
     return None

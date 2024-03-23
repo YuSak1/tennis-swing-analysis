@@ -6,7 +6,7 @@ def gif(input_file, output_path, lefty=False):
     # Read video file
     clip = VideoFileClip(input_file)
     # Video size
-    clip = clip.resize(width=600)
+    clip = clip.resize(width=200)
 
     # mirror if lefty
     if lefty:
