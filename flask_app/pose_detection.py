@@ -468,22 +468,24 @@ def pose_detection():
                                   'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x',
                                   'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
     df_swing_y = df_swing.loc[:, ['left_shoulder_y', 'right_shoulder_y',
-                                  'left_elbow_y', 'right_elbow_y', 'left_wrist_y', 'left_wrist_y',
+                                  'left_elbow_y', 'right_elbow_y', 'left_wrist_y',
                                   'right_wrist_y', 'left_hip_y', 'right_hip_y', 'left_knee_y',
                                   'right_knee_y', 'left_ankle_y', 'right_ankle_y']]
 
-    # Plot coordinate of y-axis
+    # Plot coordinate of x-axis
     plt.plot(df_swing_x)
-    plt.title("x axis")
-    plt.xlabel("Time")
-    plt.ylabel("Coordinate")
-    plt.savefig("static/upload/plot_x.png")
+    plt.title("Plot of y-axis", fontsize=18) # x and y are switched
+    plt.xlabel("Time", fontsize=16)
+    plt.ylabel("Coordinate", fontsize=16)
+    plt.savefig("static/upload/plot_y.png")
+    plt.clf()
     # Plot coordinate of y-axis
     plt.plot(df_swing_y)
-    plt.title("y-axis")
-    plt.xlabel("Time")
-    plt.ylabel("Coordinate")
-    plt.savefig("static/upload/plot_y.png")
+    plt.title("Plot of x-axis", fontsize=18) # x and y are switched
+    plt.xlabel("Time", fontsize=16)
+    plt.ylabel("Coordinate", fontsize=16)
+    plt.savefig("static/upload/plot_x.png")
+    plt.clf()
 
     print("Pose detection completed.")
 
