@@ -1,1 +1,1 @@
-# tennis-swing-classification
+# tennis-swing-analysis

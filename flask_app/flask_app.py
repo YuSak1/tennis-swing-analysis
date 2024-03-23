@@ -3,7 +3,9 @@ from flask import Flask, flash, request, redirect, url_for, render_template, sen
 from werkzeug.utils import secure_filename
 from create_gif import gif
 from pose_detection import pose_detection
+from trim_video import trim_video
 import warnings
+
 import cv2
 from keras.models import load_model
 from PIL import Image
@@ -47,9 +49,22 @@ def upload_file():
         if file and allowed_file(file.filename):
             # flash('Processing... this may take a few minutes.', 'success')
             file.save(os.path.join(UPLOAD_FOLDER, "video.mp4"))
-            filepath = os.path.join(UPLOAD_FOLDER, "video.mp4")
-            filepath_gif = "static/upload/video.gif"
-            gif(filepath, filepath_gif, lefty=False)
+
+            # Check if video length meets the requirement.
+            video_capture = cv2.VideoCapture("./static/upload/video.mp4")
+            fps = video_capture.get(cv2.CAP_PROP_FPS)
+            total_frames = video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
+            video_seconds = total_frames // fps
+            if video_seconds < 10:
+                flash('Error: Video is too short.', 'failed')
+                return redirect(request.url)
+            elif video_seconds > 20:
+                flash('Error: Video is too long.', 'failed')
+                return redirect(request.url)
+
+            trim_video()
+            filepath = os.path.join(UPLOAD_FOLDER, "video_trimmed.mp4")
+            gif(filepath, "static/upload/video.gif", lefty=False)
 
             # Run pose-detection
             print("Running pose-detection.")

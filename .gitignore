@@ -1,9 +1,9 @@
 # Default ignored files
-videos/
-flask_app/data/
-flask_app/static/upload/
-flask_app/static/videos/
-local/
-.ipynb_checkpoints/
+videos/*
+flask_app/data/*
+flask_app/static/upload/*
+flask_app/static/videos/*
+local/*
+.ipynb_checkpoints/*
 *.mp4
 *.gif
