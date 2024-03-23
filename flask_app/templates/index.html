@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>my ML Project</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<header>
+  <div style="text-align: center">
+    Tennis Swing Analysis
+  </div>
+</header>
+
+<body>
+  <div style="text-align: center">
+    <div class="heading">
+        Do you play tennis like Federer, Nadal, Djokovic, or Murray?
+    </div>
+    <div class="heading">
+      Upload your video to analyze your swing.
+    </div>
+    <br>
+    <video width="250" autoplay loop muted>
+      <source src="static/videos/Federer_short.mp4" type="video/mp4" />
+    </video>
+    <video width="250" autoplay loop muted>
+      <source src="static/videos/Nadal_short.mp4" type="video/mp4" />
+    </video>
+        <video width="250" autoplay loop muted>
+      <source src="static/videos/Djokovic_short.mp4" type="video/mp4" />
+    </video>
+        <video width="250" autoplay loop muted>
+      <source src="static/videos/Murray_short.mp4" type="video/mp4" />
+    </video>
+
+    <div id="flash" class="flash">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for category, message in messages %}
+            <li class="{{ category }}" >{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="form">
+      <form method = post enctype = multipart/form-data>
+          <input type=file name=file>
+          <input id='loading-button' type=submit value="Upload">
+      </form>
+      <div>*We don't store your data.</div>
+    </div>
+
+    <div class="loading_container">
+      <div id='loading' style='display:none'></div>
+      <div id='loading_msg' style='display:none'>Processing... this may take 2-3 minutes.</div>
+    </div>
+    <script src="/static/script.js"></script>
+
+  </div>
+
+  <div class="list">
+    <div class="requirements">Requirements:</div>
+    <ol>
+      <li>Video length must be 10-15 seconds. If video is too long, first 15 seconds will be used.</li>
+      <li>Video must be court level angle and back view.</li>
+      <li>Video quality must be at least 480p.</li>
+      <li>File format must be mp4.</li>
+    </ol>
+  </div>
+
+</body>
+</html>

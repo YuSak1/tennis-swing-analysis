@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>my ML Project</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<header>
+  <div style="text-align: center">
+    Tennis Swing Analysis
+  </div>
+</header>
+
+<body>
+  <div style="text-align: center">
+    <p><h1>Result</h1></p>
+
+    <h2>{{resultmsg}}</h2>
+    <video width="300" autoplay loop muted>
+        <source src="static/upload/video.mp4" type="video/mp4" />
+    </video>
+      <img width="300" src="static/upload/pose_detection.gif" class="result_image">
+      <img width="300" src="static/upload/pose_detection_mono.gif" class="result_image">
+     <br>
+     <br>
+     <p><h2>Can you see your video?</h2></p>
+  </div>
+</body>
