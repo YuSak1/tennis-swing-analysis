@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from create_gif import gif
 from pose_detection import pose_detection
 from trim_video import trim_video
+from classification import classification
 import warnings
 
 import cv2
@@ -32,7 +33,6 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
-
     if request.method == 'POST':
         if 'file' not in request.files:
             flash('Error: File not found', 'failed')
@@ -64,14 +64,21 @@ def upload_file():
 
             trim_video()
             filepath = os.path.join(UPLOAD_FOLDER, "video_trimmed.mp4")
-            gif(filepath, "static/upload/video.gif", lefty=False)
+            hand = request.form.get('radio')
+            if hand == 'right_handed':
+                is_lefty=False
+            elif hand == 'left_handed':
+                is_lefty=True
+            gif(filepath, "static/upload/video.gif", lefty=is_lefty)
 
             # Run pose-detection
             print("Running pose-detection.")
             pose_detection()
 
-            # model = load_model('model_weight/man_woman_cnn_v3.h5', compile=False)
-            return render_template('result.html')
+            # Run classification model
+            pred = classification()
+
+            return render_template('result.html', msg_f=pred[0], msg_n=pred[1], msg_d=pred[2], msg_m=pred[3])
 
     return render_template('index.html')
 

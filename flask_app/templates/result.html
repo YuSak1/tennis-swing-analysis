@@ -13,10 +13,19 @@
 </header>
 
 <body>
-  <div style="text-align: center">
-    <p><h1>Result</h1></p>
+    <div style="text-align: center">
+      <p><h1>Result</h1></p>
+    <div class="list-result">
+      <div class="requirements">Your swing is</div>
+      <ol>
+        <li style="list-style: none">Federer: {{msg_f}}</li>
+        <li style="list-style: none">Nadal: {{msg_n}}</li>
+        <li style="list-style: none">Djokovic: {{msg_d}}</li>
+        <li style="list-style: none">Murray: {{msg_m}}</li>
+      </ol>
+    </div>
+    <br>
 
-    <h2>{{resultmsg}}</h2>
     <video width="300" autoplay loop muted>
         <source src="static/upload/video.mp4" type="video/mp4" />
     </video>
