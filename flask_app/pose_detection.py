@@ -389,6 +389,19 @@ def run_inference(movenet, image, crop_region, crop_size):
     return keypoints_with_scores
 
 
+def normalization(df):
+    df_x = df.loc[:, ['left_shoulder_x', 'right_shoulder_x', 'left_elbow_x', 'right_elbow_x', 'left_wrist_x',
+                    'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x', 'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
+    df_y = df.loc[:, ['left_shoulder_y', 'right_shoulder_y', 'left_elbow_y', 'right_elbow_y', 'left_wrist_y',
+                    'right_wrist_y', 'left_hip_y', 'right_hip_y', 'left_knee_y', 'right_knee_y', 'left_ankle_y', 'right_ankle_y']]
+
+    df_x = df_x.apply(lambda iterator: ((df.max().max() - iterator)/(df.max().max() - df.min().min())).round(5))
+    df_y = df_y.apply(lambda iterator: (1- (df.max().max() - iterator)/(df.max().max() - df.min().min())).round(5))
+    df_out = pd.concat([df_x, df_y], axis=1)
+
+    return df_out
+
+
 def pose_detection():
     # Load the input image.
     image_path = 'static/upload/video.gif'
@@ -456,15 +469,14 @@ def pose_detection():
     imageio.mimsave('static/upload/pose_detection_mono.gif', output_mono, fps=9, loop=0)
 
     # Normalization
-    df_swing = df_swing.apply(lambda iterator: ((iterator.max() - iterator) / (iterator.max() - iterator.min())).round(2))
-
+    df_swing = normalization(df_swing)
     # Save as CSV
     df_swing.to_csv('data/CSV/pose_detection.csv')
 
     # Create plot
     fig = plt.figure(figsize=(20, 5))
     df_swing_x = df_swing.loc[:, ['left_shoulder_x', 'right_shoulder_x',
-                                  'left_elbow_x', 'right_elbow_x', 'left_wrist_x', 'left_wrist_x',
+                                  'left_elbow_x', 'right_elbow_x', 'left_wrist_x',
                                   'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x',
                                   'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
     df_swing_y = df_swing.loc[:, ['left_shoulder_y', 'right_shoulder_y',
