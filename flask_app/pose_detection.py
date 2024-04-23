@@ -14,6 +14,9 @@ import matplotlib.patches as patches
 # Some modules to display an animation using imageio.
 import imageio
 
+quick_mode = True
+if quick_mode:
+    print('Quick Mode ON')
 
 # Dictionary that maps from joint names to keypoint indices.
 KEYPOINT_DICT = {
@@ -428,25 +431,25 @@ def pose_detection():
             movenet, image[frame_idx, :, :, :], crop_region,
             crop_size=[input_size, input_size])
 
-        # Output with input images as background
-        output_images.append(draw_prediction_on_image(
-            image[frame_idx, :, :, :].numpy().astype(np.int32),
-            keypoints_with_scores, crop_region=None,
-            close_figure=True, output_image_height=300))
+        if not quick_mode:
+            # Output with input images as background
+            output_images.append(draw_prediction_on_image(
+                image[frame_idx, :, :, :].numpy().astype(np.int32),
+                keypoints_with_scores, crop_region=None,
+                close_figure=True, output_image_height=300))
 
-        # Output with monotone color as background
-        rgb_1 = np.full((image.shape[1], image.shape[2]), 0)
-        rgb_2 = np.full((image.shape[1], image.shape[2]), 0)
-        rgb_3 = np.full((image.shape[1], image.shape[2]), 0)
-        image_background = np.stack([rgb_1, rgb_2, rgb_3], axis=2)
-        image_background = tf.convert_to_tensor(image_background)
-        output_mono_images.append(draw_prediction_on_image(
-            image_background.numpy().astype(np.int32),
-            keypoints_with_scores, crop_region=None,
-            close_figure=True, output_image_height=300))
+            # Output with monotone color as background
+            rgb_1 = np.full((image.shape[1], image.shape[2]), 0)
+            rgb_2 = np.full((image.shape[1], image.shape[2]), 0)
+            rgb_3 = np.full((image.shape[1], image.shape[2]), 0)
+            image_background = np.stack([rgb_1, rgb_2, rgb_3], axis=2)
+            image_background = tf.convert_to_tensor(image_background)
+            output_mono_images.append(draw_prediction_on_image(
+                image_background.numpy().astype(np.int32),
+                keypoints_with_scores, crop_region=None,
+                close_figure=True, output_image_height=300))
 
-        crop_region = determine_crop_region(
-            keypoints_with_scores, image_height, image_width)
+        crop_region = determine_crop_region(keypoints_with_scores, image_height, image_width)
 
         # Store swing points
         df_swing.loc[frame_idx] = [keypoints_with_scores[0, 0, 5, 0], keypoints_with_scores[0, 0, 5, 1],
@@ -463,41 +466,41 @@ def pose_detection():
                                    keypoints_with_scores[0, 0, 16, 0], keypoints_with_scores[0, 0, 16, 1]]
 
     # Prepare gif visualization.
-    output = np.stack(output_images, axis=0)
-    output_mono = np.stack(output_mono_images, axis=0)
-    imageio.mimsave('static/upload/pose_detection.gif', output, fps=9, loop=0)
-    imageio.mimsave('static/upload/pose_detection_mono.gif', output_mono, fps=9, loop=0)
+    if not quick_mode:
+        output = np.stack(output_images, axis=0)
+        output_mono = np.stack(output_mono_images, axis=0)
+        imageio.mimsave('static/upload/pose_detection.gif', output, fps=9, loop=0)
+        imageio.mimsave('static/upload/pose_detection_mono.gif', output_mono, fps=9, loop=0)
 
-    # Normalization
-    df_swing = normalization(df_swing)
     # Save as CSV
     df_swing.to_csv('data/CSV/pose_detection.csv')
 
-    # Create plot
-    fig = plt.figure(figsize=(20, 5))
-    df_swing_x = df_swing.loc[:, ['left_shoulder_x', 'right_shoulder_x',
-                                  'left_elbow_x', 'right_elbow_x', 'left_wrist_x',
-                                  'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x',
-                                  'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
-    df_swing_y = df_swing.loc[:, ['left_shoulder_y', 'right_shoulder_y',
-                                  'left_elbow_y', 'right_elbow_y', 'left_wrist_y',
-                                  'right_wrist_y', 'left_hip_y', 'right_hip_y', 'left_knee_y',
-                                  'right_knee_y', 'left_ankle_y', 'right_ankle_y']]
+    if not quick_mode:
+        # Create plot
+        fig = plt.figure(figsize=(20, 5))
+        df_swing_x = df_swing.loc[:, ['left_shoulder_x', 'right_shoulder_x',
+                                      'left_elbow_x', 'right_elbow_x', 'left_wrist_x',
+                                      'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x',
+                                      'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
+        df_swing_y = df_swing.loc[:, ['left_shoulder_y', 'right_shoulder_y',
+                                      'left_elbow_y', 'right_elbow_y', 'left_wrist_y',
+                                      'right_wrist_y', 'left_hip_y', 'right_hip_y', 'left_knee_y',
+                                      'right_knee_y', 'left_ankle_y', 'right_ankle_y']]
 
-    # Plot coordinate of x-axis
-    plt.plot(df_swing_x)
-    plt.title("Plot of y-axis", fontsize=18) # x and y are switched
-    plt.xlabel("Time", fontsize=16)
-    plt.ylabel("Coordinate", fontsize=16)
-    plt.savefig("static/upload/plot_y.png")
-    plt.clf()
-    # Plot coordinate of y-axis
-    plt.plot(df_swing_y)
-    plt.title("Plot of x-axis", fontsize=18) # x and y are switched
-    plt.xlabel("Time", fontsize=16)
-    plt.ylabel("Coordinate", fontsize=16)
-    plt.savefig("static/upload/plot_x.png")
-    plt.clf()
+        # Plot coordinate of x-axis
+        plt.plot(df_swing_x)
+        plt.title("Plot of y-axis", fontsize=18) # x and y are switched
+        plt.xlabel("Time", fontsize=16)
+        plt.ylabel("Coordinate", fontsize=16)
+        plt.savefig("static/upload/plot_y.png")
+        plt.clf()
+        # Plot coordinate of y-axis
+        plt.plot(df_swing_y)
+        plt.title("Plot of x-axis", fontsize=18) # x and y are switched
+        plt.xlabel("Time", fontsize=16)
+        plt.ylabel("Coordinate", fontsize=16)
+        plt.savefig("static/upload/plot_x.png")
+        plt.clf()
 
     print("Pose detection completed.")
 
