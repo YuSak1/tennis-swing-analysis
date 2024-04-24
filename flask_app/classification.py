@@ -79,20 +79,19 @@ def classification():
     df_feature_ext = df_feature_ext.sort_values('dist', ascending=True)
     df_feature_ext.loc[: ,['name','dist']].to_csv('data/feature_dist.csv')
 
+    #kNN
+    k = 10
+    df_knn = df_feature_ext.loc[:, 'name'].iloc[0:k]
+    knn_f = sum(1 for row in df_knn if row[0] == 'f')
+    knn_n = sum(1 for row in df_knn if row[0] == 'n')
+    knn_d = sum(1 for row in df_knn if row[0] == 'd')
+    knn_m = sum(1 for row in df_knn if row[0] == 'm')
+    pred_idx = pd.Series([knn_f, knn_n, knn_d, knn_m]).idxmax()
+    pred = ['f', 'n', 'd', 'm'][pred_idx]
+
     # Calculate the likelihood
     frac = 0.75
-    print('Result: ', df_feature_ext.loc[:, 'name'].iloc[0][0])
-    if df_feature_ext.loc[:, 'name'].iloc[0][0] == 'f':
-        n_samples = int(sum(1 for row in df_feature_ext.loc[:, 'name'] if row[0] == 'f') / frac)
-    elif df_feature_ext.loc[:, 'name'].iloc[0][0] == 'n':
-        n_samples = int(sum(1 for row in df_feature_ext.loc[:, 'name'] if row[0] == 'n') / frac)
-    elif df_feature_ext.loc[:, 'name'].iloc[0][0] == 'd':
-        n_samples = int(sum(1 for row in df_feature_ext.loc[:, 'name'] if row[0] == 'd') / frac)
-    elif df_feature_ext.loc[:, 'name'].iloc[0][0] == 'm':
-        n_samples = int(sum(1 for row in df_feature_ext.loc[:, 'name'] if row[0] == 'm') / frac)
-    else:
-        n_samples = 0  # error
-
+    n_samples = int(sum(1 for row in df_feature_ext.loc[:, 'name'] if row[0] == pred) / frac)
     samples = df_feature_ext.loc[:, 'name'].iloc[:n_samples]
     print('samples.shape: ', samples.shape)
     num_f = sum(1 for row in samples if row[0] == 'f')
@@ -104,6 +103,7 @@ def classification():
     pred_msg_n = '{:.2f} %'.format((num_n / n_samples) * 100)  # Nadal
     pred_msg_d = '{:.2f} %'.format((num_d / n_samples) * 100)  # Djokovic
     pred_msg_m = '{:.2f} %'.format((num_m / n_samples) * 100)  # Murray
+    pred_result_video = "static/videos/result_videos/" + df_feature_ext.loc[:, 'name'].iloc[0][:-4] + '.mp4'
 
-    return [pred_msg_f, pred_msg_n, pred_msg_d, pred_msg_m]
+    return [pred_msg_f, pred_msg_n, pred_msg_d, pred_msg_m, pred_result_video]
 

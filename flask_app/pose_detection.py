@@ -14,7 +14,7 @@ import matplotlib.patches as patches
 # Some modules to display an animation using imageio.
 import imageio
 
-quick_mode = True
+quick_mode = False
 if quick_mode:
     print('Quick Mode ON')
 

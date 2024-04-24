@@ -124,3 +124,12 @@ body {
     border-top: 2px skyblue solid;
     border-bottom: 2px skyblue solid;
  }
+
+  .br{
+    width:50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    border-top: 2px skyblue solid;
+ }

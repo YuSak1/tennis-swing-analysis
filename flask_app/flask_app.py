@@ -77,8 +77,10 @@ def upload_file():
 
             # Run classification model
             pred = classification()
+            print(pred[4])
 
-            return render_template('result.html', msg_f=pred[0], msg_n=pred[1], msg_d=pred[2], msg_m=pred[3])
+            return render_template('result.html', msg_f=pred[0], msg_n=pred[1], msg_d=pred[2], msg_m=pred[3],
+                                   result_video=pred[4])
 
     return render_template('index.html')
 
