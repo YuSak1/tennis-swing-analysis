@@ -69,18 +69,18 @@ def classification():
          data_swing[:, :, 8], data_swing[:, :, 9]])
 
     print("features.shape: ", features.shape)
-    df_feature_ext = pd.read_csv('data/feature_ext_all_v5.csv').drop('Unnamed: 0', axis=1)
+    df_feature_ext = pd.read_csv('data/CSV/feature_ext_all_v5.csv').drop('Unnamed: 0', axis=1)
     l_dist = []
     for i in range(df_feature_ext.shape[0]):
         # get the distance between features
-        dist = abs(np.linalg.norm(features[0, :] - df_feature_ext.iloc[i, :-2]))
+        dist = abs(np.linalg.norm(features[0, :] - df_feature_ext.iloc[i, :-1]))
         l_dist.append(dist)
     df_feature_ext['dist'] = l_dist
     df_feature_ext = df_feature_ext.sort_values('dist', ascending=True)
-    df_feature_ext.loc[: ,['name','dist']].to_csv('data/feature_dist.csv')
+    df_feature_ext.loc[: ,['name','dist']].to_csv('data/CSV/feature_dist.csv')
 
     #kNN
-    k = 10
+    k = 30
     df_knn = df_feature_ext.loc[:, 'name'].iloc[0:k]
     knn_f = sum(1 for row in df_knn if row[0] == 'f')
     knn_n = sum(1 for row in df_knn if row[0] == 'n')

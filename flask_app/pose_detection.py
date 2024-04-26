@@ -14,7 +14,7 @@ import matplotlib.patches as patches
 # Some modules to display an animation using imageio.
 import imageio
 
-quick_mode = False
+quick_mode = True
 if quick_mode:
     print('Quick Mode ON')
 
@@ -390,19 +390,6 @@ def run_inference(movenet, image, crop_region, crop_size):
                                                       crop_region['width'] * image_width *
                                                       keypoints_with_scores[0, 0, idx, 1]) / image_width
     return keypoints_with_scores
-
-
-def normalization(df):
-    df_x = df.loc[:, ['left_shoulder_x', 'right_shoulder_x', 'left_elbow_x', 'right_elbow_x', 'left_wrist_x',
-                    'right_wrist_x', 'left_hip_x', 'right_hip_x', 'left_knee_x', 'right_knee_x', 'left_ankle_x', 'right_ankle_x']]
-    df_y = df.loc[:, ['left_shoulder_y', 'right_shoulder_y', 'left_elbow_y', 'right_elbow_y', 'left_wrist_y',
-                    'right_wrist_y', 'left_hip_y', 'right_hip_y', 'left_knee_y', 'right_knee_y', 'left_ankle_y', 'right_ankle_y']]
-
-    df_x = df_x.apply(lambda iterator: ((df.max().max() - iterator)/(df.max().max() - df.min().min())).round(5))
-    df_y = df_y.apply(lambda iterator: (1- (df.max().max() - iterator)/(df.max().max() - df.min().min())).round(5))
-    df_out = pd.concat([df_x, df_y], axis=1)
-
-    return df_out
 
 
 def pose_detection():
