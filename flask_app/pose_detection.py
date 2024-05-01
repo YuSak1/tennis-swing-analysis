@@ -10,13 +10,8 @@ import cv2
 from matplotlib import pyplot as plt
 from matplotlib.collections import LineCollection
 import matplotlib.patches as patches
-
-# Some modules to display an animation using imageio.
 import imageio
 
-quick_mode = True
-if quick_mode:
-    print('Quick Mode ON')
 
 # Dictionary that maps from joint names to keypoint indices.
 KEYPOINT_DICT = {
@@ -392,7 +387,14 @@ def run_inference(movenet, image, crop_region, crop_size):
     return keypoints_with_scores
 
 
-def pose_detection():
+def pose_detection(mode):
+    if mode == 'advanced':
+        quick_mode = False
+        print('Advanced mode')
+    else:
+        quick_mode = True
+        print('Quick mode')
+
     # Load the input image.
     image_path = 'static/upload/video.gif'
     image = tf.io.read_file(image_path)
@@ -423,7 +425,7 @@ def pose_detection():
             output_images.append(draw_prediction_on_image(
                 image[frame_idx, :, :, :].numpy().astype(np.int32),
                 keypoints_with_scores, crop_region=None,
-                close_figure=True, output_image_height=300))
+                close_figure=True, output_image_height=350))
 
             # Output with monotone color as background
             rgb_1 = np.full((image.shape[1], image.shape[2]), 0)
@@ -434,7 +436,7 @@ def pose_detection():
             output_mono_images.append(draw_prediction_on_image(
                 image_background.numpy().astype(np.int32),
                 keypoints_with_scores, crop_region=None,
-                close_figure=True, output_image_height=300))
+                close_figure=True, output_image_height=350))
 
         crop_region = determine_crop_region(keypoints_with_scores, image_height, image_width)
 

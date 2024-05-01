@@ -34,7 +34,12 @@ def create_features(df):
     return df_out
 
 
-def classification():
+def classification(mode):
+    if mode == 'advanced':
+        quick_mode = False
+    else:
+        quick_mode = True
+
     data_swing = pd.read_csv('data/CSV/pose_detection.csv').drop('index', axis=1).iloc[0:90]
     data_swing = normalization(data_swing)
     data_swing = create_features(data_swing)
@@ -44,23 +49,16 @@ def classification():
     # model_name = 'tennis_swing_model_v5.h5'
     # model = load_model('model_weight/'+model_name, compile=False)
     # print("Model: ", model_name)
-
+    #
     # pred = model.predict([data_swing[:,:,0], data_swing[:,:,1], data_swing[:,:,2], data_swing[:,:,3],
     #                       data_swing[:,:,4], data_swing[:,:,5], data_swing[:,:,6], data_swing[:,:,7],
-    #                       data_swing[:,:,8], data_swing[:,:,9]])[0]
-
-    # pred_msg_f = '{:.4f} %'.format(pred[0]*100)  # Federer
-    # pred_msg_n = '{:.4f} %'.format(pred[1]*100)  # Nadal
-    # pred_msg_d = '{:.4f} %'.format(pred[2]*100)  # Djokovic
-    # pred_msg_m = '{:.4f} %'.format(pred[3]*100)  # Murray
-
-    # Feature extraction
-    # model_feature = Model(
-    #     inputs=[model.get_layer('input_11').input, model.get_layer('input_12').input, model.get_layer('input_13').input,
-    #             model.get_layer('input_14').input, model.get_layer('input_15').input,
-    #             model.get_layer('input_16').input, model.get_layer('input_17').input, model.get_layer('input_18').input,
-    #             model.get_layer('input_19').input, model.get_layer('input_20').input],
-    #     outputs=model.get_layer('dense_25').output)
+    #                       data_swing[:,:,8], data_swing[:,:,9]])
+    #
+    # print('pred: ', pred)
+    #
+    # pred_y = np.argmax(pred, axis=1)
+    # pred_y = ['f', 'n', 'd', 'm'][pred_y[0]]
+    # print('pred_y: ', pred_y)
 
     model_feature = load_model('model_weight/tennis_swing_model_v5_feature.h5', compile=False)
     features = model_feature.predict(
@@ -77,21 +75,11 @@ def classification():
         l_dist.append(dist)
     df_feature_ext['dist'] = l_dist
     df_feature_ext = df_feature_ext.sort_values('dist', ascending=True)
-    df_feature_ext.loc[: ,['name','dist']].to_csv('data/CSV/feature_dist.csv')
-
-    #kNN
-    k = 30
-    df_knn = df_feature_ext.loc[:, 'name'].iloc[0:k]
-    knn_f = sum(1 for row in df_knn if row[0] == 'f')
-    knn_n = sum(1 for row in df_knn if row[0] == 'n')
-    knn_d = sum(1 for row in df_knn if row[0] == 'd')
-    knn_m = sum(1 for row in df_knn if row[0] == 'm')
-    pred_idx = pd.Series([knn_f, knn_n, knn_d, knn_m]).idxmax()
-    pred = ['f', 'n', 'd', 'm'][pred_idx]
+    df_feature_ext.loc[: , ['name', 'dist']].to_csv('data/CSV/feature_dist.csv')
 
     # Calculate the likelihood
-    frac = 0.75
-    n_samples = int(sum(1 for row in df_feature_ext.loc[:, 'name'] if row[0] == pred) / frac)
+    frac = 0.8
+    n_samples = int(160 / frac)
     samples = df_feature_ext.loc[:, 'name'].iloc[:n_samples]
     print('samples.shape: ', samples.shape)
     num_f = sum(1 for row in samples if row[0] == 'f')
@@ -103,7 +91,119 @@ def classification():
     pred_msg_n = '{:.2f} %'.format((num_n / n_samples) * 100)  # Nadal
     pred_msg_d = '{:.2f} %'.format((num_d / n_samples) * 100)  # Djokovic
     pred_msg_m = '{:.2f} %'.format((num_m / n_samples) * 100)  # Murray
-    pred_result_video = "static/videos/result_videos/" + df_feature_ext.loc[:, 'name'].iloc[0][:-4] + '.mp4'
 
-    return [pred_msg_f, pred_msg_n, pred_msg_d, pred_msg_m, pred_result_video]
+    # kNN (k=200)
+    pred_idx = pd.Series([num_f, num_n, num_d, num_m]).idxmax()
+    pred_y = ['f', 'n', 'd', 'm'][pred_idx]
+    print('pred_y: ', pred_y)
 
+    for sample in df_feature_ext.loc[:, 'name']:
+        if sample.startswith(pred_y):
+            most_similar_sample = sample
+            break
+
+    pred_result_video = "static/videos/result_videos/" + most_similar_sample[:-4] + '.mp4'
+
+    if not quick_mode:
+        # Find nearest n sub-features
+        model_sub1 = load_model('model_weight/model_sub1.h5', compile=False)
+        model_sub2 = load_model('model_weight/model_sub2.h5', compile=False)
+        model_sub3 = load_model('model_weight/model_sub3.h5', compile=False)
+        model_sub4 = load_model('model_weight/model_sub4.h5', compile=False)
+        model_sub5 = load_model('model_weight/model_sub5.h5', compile=False)
+        model_sub6 = load_model('model_weight/model_sub6.h5', compile=False)
+        model_sub7 = load_model('model_weight/model_sub7.h5', compile=False)
+        model_sub8 = load_model('model_weight/model_sub8.h5', compile=False)
+        model_sub9 = load_model('model_weight/model_sub9.h5', compile=False)
+        model_sub10 = load_model('model_weight/model_sub10.h5', compile=False)
+
+        # Extract sub-features of input data
+        features_sub1_input = model_sub1.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub2_input = model_sub2.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub3_input = model_sub3.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub4_input = model_sub4.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub5_input = model_sub5.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub6_input = model_sub6.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub7_input = model_sub7.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub8_input = model_sub8.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub9_input = model_sub9.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        features_sub10_input = model_sub10.predict(
+            [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
+             data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
+             data_swing[:, :, 8], data_swing[:, :, 9]])[0]
+        df_feature_sub_input = pd.DataFrame(np.stack([features_sub1_input, features_sub2_input, features_sub3_input,
+                                                          features_sub4_input, features_sub5_input, features_sub6_input,
+                                                          features_sub7_input, features_sub8_input, features_sub9_input,
+                                                          features_sub10_input]))
+
+        df_feature_sub_all = pd.read_csv('data/CSV/feature_ext_sub_all.csv').drop('Unnamed: 0', axis=1)
+        df_feature_sub_sample = df_feature_sub_all[(df_feature_sub_all['name'] == most_similar_sample)].iloc[:, :-2].astype('float32')
+        print("!!!!!!!!!!!!!!!", df_feature_sub_sample.shape)
+
+        # Calculate the distances
+        l_dist = []
+        for i in range(df_feature_sub_input.shape[0]):
+            dist = abs(np.linalg.norm(df_feature_sub_input.iloc[i] - df_feature_sub_sample.iloc[i]))
+            print(i)
+            print(df_feature_sub_input.iloc[i] - df_feature_sub_sample.iloc[i])
+            print(np.linalg.norm(df_feature_sub_input.iloc[i] - df_feature_sub_sample.iloc[i]))
+            print(dist)
+            l_dist.append(dist)
+        print(df_feature_sub_input.iloc[0])
+        print(df_feature_sub_sample.iloc[0])
+        print(df_feature_sub_input.shape)
+        print(df_feature_sub_sample.shape)
+        print(l_dist)
+
+        smallest_indices = []
+        for i in range(3):
+            min_index = l_dist.index(min(l_dist))
+            smallest_indices.append(min_index)
+            l_dist.pop(min_index)
+
+        msg_feature_sub = ["Height of your non-dominant hand.",
+                           "Height of your dominant hand.",
+                           "Position of your dominant elbow",
+                           "Movement of your dominant arm.",
+                           "Movement of your non-dominant arm.",
+                           "Distance of your right and left arms",
+                           "Movement of your shoulders",
+                           "Position of your non-dominant elbow",
+                           "Position of your dominant hand.",
+                           "Distance of your right and left feet."]
+
+    print("!!!!!!!!!!!!")
+    print(smallest_indices)
+
+    if not quick_mode:
+        return [pred_msg_f, pred_msg_n, pred_msg_d, pred_msg_m, pred_result_video,
+                msg_feature_sub[smallest_indices[0]], msg_feature_sub[smallest_indices[1]], msg_feature_sub[smallest_indices[2]]]
+    else:
+        return [pred_msg_f, pred_msg_n, pred_msg_d, pred_msg_m, pred_result_video]

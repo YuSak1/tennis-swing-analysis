@@ -48,14 +48,28 @@
 
     <div class="form">
       <form method = post enctype = multipart/form-data>
-        <div>
-            <label for="r1">Right-handed：</label>
-            <input type="radio" id="r1" name="radio" value="right_handed" checked>
+        <div class="form_sub">
+          <div>
+              <label for="r1">Right-handed：</label>
+              <input type="radio" id="r1" name="radio_hand" value="right_handed" checked>
+          </div>
+          <div>
+              <label for="r2">Left-handed ：</label>
+              <input type="radio" id="r2" name="radio_hand" value="left_handed">
+          </div>
         </div>
-        <div>
-			<label for="r2">Left-handed ：</label>
-			<input type="radio" id="r2" name="radio" value="left_handed">
-		</div>
+
+        <div class="form_sub">
+          <div>
+              <label for="r3">Advanced analysis：</label>
+              <input type="radio" id="r3" name="radio_mode" value="advanced" checked>
+          </div>
+          <div>
+              <label for="r4">Quick mode：</label>
+              <input type="radio" id="r4" name="radio_mode" value="quick">
+          </div>
+        </div>
+
           <input type=file name=file>
           <input id='loading-button' type=submit value="Upload">
       </form>

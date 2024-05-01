@@ -26,21 +26,25 @@
     </div>
     <br>
 
-    <video width="300" autoplay loop muted>
+    <video width="350" autoplay loop muted>
         <source src="static/upload/video.mp4" type="video/mp4" />
     </video>
-      <img width="300" src="static/upload/pose_detection.gif" class="result_image">
-      <img width="300" src="static/upload/pose_detection_mono.gif" class="result_image">
+      <img width="350" src="static/upload/pose_detection.gif" class="result_image">
+      <img width="350" src="static/upload/pose_detection_mono.gif" class="result_image">
       <br>
       <img width="500" src="static/upload/plot_x.png" class="result_image">
       <img width="500" src="static/upload/plot_y.png" class="result_image">
      <br>
      <p class="br"></p>
-     <br>
-     <video width="300" autoplay loop muted>
+     <div class="requirements">Your swing is similar to this.</div>
+     <video width="350" autoplay loop muted>
         <source src={{result_video}} type="video/mp4" />
     </video>
-
-     <p><h2>Can you see your video?</h2></p>
+    <div class="requirements">Top 3 similar parts are...</div>
+      <ol>
+        <li style="list-style: none">1. {{msg_sub1}}</li>
+        <li style="list-style: none">2. {{msg_sub2}}</li>
+        <li style="list-style: none">3. {{msg_sub3}}</li>
+      </ol>
   </div>
 </body>
