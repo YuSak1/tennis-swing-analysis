@@ -128,15 +128,20 @@ body {
 }
 
  .list-result{
-    font-size: 18px;
-    width:50%;
+    width:80%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 3px;
     margin-bottom: 3px;
     padding-bottom: 1px;
-    border-top: 2px skyblue solid;
-    border-bottom: 2px skyblue solid;
+ }
+
+  .list-result-sub{
+    text-align: left;
+    font-size: 18px;
+    width:40%;
+    margin-left: auto;
+    margin-right: auto;
  }
 
   .br{

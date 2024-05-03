@@ -165,22 +165,12 @@ def classification(mode):
 
         df_feature_sub_all = pd.read_csv('data/CSV/feature_ext_sub_all.csv').drop('Unnamed: 0', axis=1)
         df_feature_sub_sample = df_feature_sub_all[(df_feature_sub_all['name'] == most_similar_sample)].iloc[:, :-2].astype('float32')
-        print("!!!!!!!!!!!!!!!", df_feature_sub_sample.shape)
 
         # Calculate the distances
         l_dist = []
         for i in range(df_feature_sub_input.shape[0]):
-            dist = abs(np.linalg.norm(df_feature_sub_input.iloc[i] - df_feature_sub_sample.iloc[i]))
-            print(i)
-            print(df_feature_sub_input.iloc[i] - df_feature_sub_sample.iloc[i])
-            print(np.linalg.norm(df_feature_sub_input.iloc[i] - df_feature_sub_sample.iloc[i]))
-            print(dist)
+            dist = abs(np.linalg.norm(np.array(df_feature_sub_input.iloc[i]) - np.array(df_feature_sub_sample.iloc[i])))
             l_dist.append(dist)
-        print(df_feature_sub_input.iloc[0])
-        print(df_feature_sub_sample.iloc[0])
-        print(df_feature_sub_input.shape)
-        print(df_feature_sub_sample.shape)
-        print(l_dist)
 
         smallest_indices = []
         for i in range(3):
@@ -198,9 +188,6 @@ def classification(mode):
                            "Position of your non-dominant elbow",
                            "Position of your dominant hand.",
                            "Distance of your right and left feet."]
-
-    print("!!!!!!!!!!!!")
-    print(smallest_indices)
 
     if not quick_mode:
         return [pred_msg_f, pred_msg_n, pred_msg_d, pred_msg_m, pred_result_video,

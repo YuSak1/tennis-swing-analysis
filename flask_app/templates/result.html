@@ -6,25 +6,30 @@
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 
+
 <header>
   <div style="text-align: center">
     Tennis Swing Analysis
   </div>
 </header>
 
+
 <body>
     <div style="text-align: center">
       <p><h1>Result</h1></p>
+    <p class="br"></p>
     <div class="list-result">
-      <div class="requirements">Your swing is</div>
-      <ol>
-        <li style="list-style: none">Federer: {{msg_f}}</li>
-        <li style="list-style: none">Nadal: {{msg_n}}</li>
-        <li style="list-style: none">Djokovic: {{msg_d}}</li>
-        <li style="list-style: none">Murray: {{msg_m}}</li>
-      </ol>
+        <div class="list-result-sub">
+          <div class="requirements">Your swing is</div>
+          <ol>
+            <li style="list-style: none">Federer: {{msg_f}}</li>
+            <li style="list-style: none">Nadal: {{msg_n}}</li>
+            <li style="list-style: none">Djokovic: {{msg_d}}</li>
+            <li style="list-style: none">Murray: {{msg_m}}</li>
+          </ol>
+        </div>
     </div>
-    <br>
+    <p class="br"></p>
 
     <video width="350" autoplay loop muted>
         <source src="static/upload/video.mp4" type="video/mp4" />
@@ -40,11 +45,16 @@
      <video width="350" autoplay loop muted>
         <source src={{result_video}} type="video/mp4" />
     </video>
-    <div class="requirements">Top 3 similar parts are...</div>
-      <ol>
-        <li style="list-style: none">1. {{msg_sub1}}</li>
-        <li style="list-style: none">2. {{msg_sub2}}</li>
-        <li style="list-style: none">3. {{msg_sub3}}</li>
-      </ol>
+
+    <div class="list-result">
+        <div class="list-result-sub">
+            <div class="requirements">Top 3 similar parts are...</div>
+              <ol>
+                <li style="list-style: none">1. {{msg_sub1}}</li>
+                <li style="list-style: none">2. {{msg_sub2}}</li>
+                <li style="list-style: none">3. {{msg_sub3}}</li>
+              </ol>
+        </div>
+    </div>
   </div>
 </body>
