@@ -14,17 +14,20 @@
 
 <body>
     <div style="text-align: center">
-          <p><h1>Result</h1></p>
+        <p><h1>Result</h1></p>
+        <p class="br"></p>
         <div class="list-result">
-          <div class="requirements">Your swing is</div>
-          <ol>
-            <li style="list-style: none">Federer: {{msg_f}}</li>
-            <li style="list-style: none">Nadal: {{msg_n}}</li>
-            <li style="list-style: none">Djokovic: {{msg_d}}</li>
-            <li style="list-style: none">Murray: {{msg_m}}</li>
-          </ol>
+            <div class="list-result-sub">
+              <div class="requirements">Your swing is</div>
+              <ol>
+                <li style="list-style: none">Federer:&nbsp; {{msg_f}}</li>
+                <li style="list-style: none">Nadal: &nbsp;&nbsp;&nbsp;&nbsp;{{msg_n}}</li>
+                <li style="list-style: none">Djokovic: {{msg_d}}</li>
+                <li style="list-style: none">Murray: &nbsp;&nbsp;{{msg_m}}</li>
+              </ol>
+            </div>
         </div>
-        <br>
+        <p class="br"></p>
 
         <video width="350" autoplay loop muted>
             <source src="static/upload/video.mp4" type="video/mp4" />
