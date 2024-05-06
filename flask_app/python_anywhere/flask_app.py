@@ -46,7 +46,7 @@ def upload_file():
             file.save(os.path.join(UPLOAD_FOLDER, "video.mp4"))
 
             # Check if video length meets the requirement.
-            video_capture = cv2.VideoCapture("./static/upload/video.mp4")
+            video_capture = cv2.VideoCapture("/home/YuuS/mysite/static/upload/video.mp4")
             fps = video_capture.get(cv2.CAP_PROP_FPS)
             total_frames = video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
             video_seconds = total_frames // fps
@@ -64,7 +64,7 @@ def upload_file():
                 is_lefty=False
             elif hand == 'left_handed':
                 is_lefty=True
-            gif(filepath, "static/upload/video.gif", lefty=is_lefty)
+            gif(filepath, "/home/YuuS/mysite/static/upload/video.gif", lefty=is_lefty)
 
             # Run pose-detection
             mode = request.form.get('radio_mode')
