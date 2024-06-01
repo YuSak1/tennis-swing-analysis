@@ -4,7 +4,7 @@ videos_training/*
 flask_app/static/upload/*
 flask_app/static/videos/*
 flask_app/.idea
-# flask_app/__pycache__
+flask_app/__pycache__
 local/*
 .ipynb_checkpoints/*
 *.mp4
