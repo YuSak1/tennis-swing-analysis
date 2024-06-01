@@ -13,7 +13,7 @@ import sys
 # Hide warnings
 warnings.simplefilter('ignore')
 
-UPLOAD_FOLDER = './static/upload'
+UPLOAD_FOLDER = '/home/YuuS/mysite/static/upload'
 ALLOWED_EXTENSIONS = set(['mp4'])
 
 app = Flask(__name__)
@@ -74,7 +74,7 @@ def upload_file():
 
             # Run classification model
             pred = classification(mode)
-            print(pred[4])
+            print("pred_result_video: ", pred[4])
 
             t_end = time.time()
             elapsed_time = t_end - t_start

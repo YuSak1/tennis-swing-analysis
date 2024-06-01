@@ -186,9 +186,12 @@ def draw_prediction_on_image(
 
 
 # Load MoveNet Thunder
-module = hub.load("https://tfhub.dev/google/movenet/singlepose/thunder/4")
-input_size = 256
+# !wget -q -O model.tflite https://tfhub.dev/google/lite-model/movenet/singlepose/lightning/tflite/float16/4?lite-format=tflite
+input_size = 192
 
+# Initialize the TFLite interpreter
+interpreter = tf.lite.Interpreter(model_path="/home/YuuS/.virtualenvs/myvirtualenv1/model.tflite")
+interpreter.allocate_tensors()
 
 def movenet(input_image):
     """Runs detection on an input image.
@@ -202,15 +205,49 @@ def movenet(input_image):
       A [1, 1, 17, 3] float numpy array representing the predicted keypoint
       coordinates and scores.
     """
-    model = module.signatures['serving_default']
-
-    # SavedModel format expects tensor type of int32.
-    input_image = tf.cast(input_image, dtype=tf.int32)
-    # Run model inference.
-    outputs = model(input_image)
-    # Output is a [1, 1, 17, 3] tensor.
-    keypoints_with_scores = outputs['output_0'].numpy()
+    # TF Lite format expects tensor type of uint8.
+    input_image = tf.cast(input_image, dtype=tf.uint8)
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
+    interpreter.set_tensor(input_details[0]['index'], input_image.numpy())
+    # Invoke inference.
+    interpreter.invoke()
+    # Get the model prediction.
+    keypoints_with_scores = interpreter.get_tensor(output_details[0]['index'])
     return keypoints_with_scores
+
+
+# module = hub.load("https://tfhub.dev/google/movenet/singlepose/thunder/4")
+# input_size = 256
+# # module = hub.load("https://tfhub.dev/google/movenet/singlepose/lightning/4")
+# # input_size = 192
+
+
+# def movenet(input_image):
+#     """Runs detection on an input image.
+
+#     Args:
+#       input_image: A [1, height, width, 3] tensor represents the input image
+#         pixels. Note that the height/width should already be resized and match the
+#         expected input resolution of the model before passing into this function.
+
+#     Returns:
+#       A [1, 1, 17, 3] float numpy array representing the predicted keypoint
+#       coordinates and scores.
+#     """
+#     print("Building model...")
+#     model = module.signatures['serving_default']
+#     print("Model is built.")
+
+#     # SavedModel format expects tensor type of int32.
+#     input_image = tf.cast(input_image, dtype=tf.int32)
+#     # Run model inference.
+#     print("Running model inference...")
+#     outputs = model(input_image)
+#     print("Inference finished.")
+#     # Output is a [1, 1, 17, 3] tensor.
+#     keypoints_with_scores = outputs['output_0'].numpy()
+#     return keypoints_with_scores
 
 
 # Confidence score to determine whether a keypoint prediction is reliable.
@@ -374,6 +411,7 @@ def run_inference(movenet, image, crop_region, crop_size):
         tf.expand_dims(image, axis=0), crop_region, crop_size=crop_size)
     # Run model inference.
     keypoints_with_scores = movenet(input_image)
+
     # Update the coordinates.
     for idx in range(17):
         keypoints_with_scores[0, 0, idx, 0] = (
@@ -415,6 +453,7 @@ def pose_detection(mode):
 
     output_images = []
     output_mono_images = []
+    print("Detecting keypoints.")
     for frame_idx in range(num_frames):
         keypoints_with_scores = run_inference(
             movenet, image[frame_idx, :, :, :], crop_region,

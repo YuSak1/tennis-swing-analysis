@@ -102,20 +102,20 @@ def classification(mode):
             most_similar_sample = sample
             break
 
-    pred_result_video = "/home/YuuS/mysite/static/videos/result_videos/" + most_similar_sample[:-4] + '.mp4'
+    pred_result_video = "static/videos/result_videos/" + most_similar_sample[:-4] + '.mp4'
 
     if not quick_mode:
         # Find nearest n sub-features
-        model_sub1 = load_model('model_weight/model_sub1.h5', compile=False)
-        model_sub2 = load_model('model_weight/model_sub2.h5', compile=False)
-        model_sub3 = load_model('model_weight/model_sub3.h5', compile=False)
-        model_sub4 = load_model('model_weight/model_sub4.h5', compile=False)
-        model_sub5 = load_model('model_weight/model_sub5.h5', compile=False)
-        model_sub6 = load_model('model_weight/model_sub6.h5', compile=False)
-        model_sub7 = load_model('model_weight/model_sub7.h5', compile=False)
-        model_sub8 = load_model('model_weight/model_sub8.h5', compile=False)
-        model_sub9 = load_model('model_weight/model_sub9.h5', compile=False)
-        model_sub10 = load_model('model_weight/model_sub10.h5', compile=False)
+        model_sub1 = load_model('/home/YuuS/mysite/model_weight/model_sub1.h5', compile=False)
+        model_sub2 = load_model('/home/YuuS/mysite/model_weight/model_sub2.h5', compile=False)
+        model_sub3 = load_model('/home/YuuS/mysite/model_weight/model_sub3.h5', compile=False)
+        model_sub4 = load_model('/home/YuuS/mysite/model_weight/model_sub4.h5', compile=False)
+        model_sub5 = load_model('/home/YuuS/mysite/model_weight/model_sub5.h5', compile=False)
+        model_sub6 = load_model('/home/YuuS/mysite/model_weight/model_sub6.h5', compile=False)
+        model_sub7 = load_model('/home/YuuS/mysite/model_weight/model_sub7.h5', compile=False)
+        model_sub8 = load_model('/home/YuuS/mysite/model_weight/model_sub8.h5', compile=False)
+        model_sub9 = load_model('/home/YuuS/mysite/model_weight/model_sub9.h5', compile=False)
+        model_sub10 = load_model('/home/YuuS/mysite/model_weight/model_sub10.h5', compile=False)
 
         # Extract sub-features of input data
         features_sub1_input = model_sub1.predict(
@@ -173,10 +173,10 @@ def classification(mode):
             l_dist.append(dist)
 
         smallest_indices = []
-        for i in range(3):
+        for i in range(10):
             min_index = l_dist.index(min(l_dist))
             smallest_indices.append(min_index)
-            l_dist.pop(min_index)
+            l_dist[min_index] = 10**5
 
         msg_feature_sub = ["Height of your non-dominant hand.",
                            "Height of your dominant hand.",
