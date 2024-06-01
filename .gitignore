@@ -1,8 +1,10 @@
 # Default ignored files
-videos/*
+videos_training/*
 flask_app/data/*
 flask_app/static/upload/*
 flask_app/static/videos/*
+flask_app/.idea
+flask_app/_pycache_
 local/*
 .ipynb_checkpoints/*
 *.mp4
