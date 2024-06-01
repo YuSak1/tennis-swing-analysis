@@ -1,6 +1,6 @@
 # Default ignored files
 videos_training/*
-flask_app/data/*
+# flask_app/data/*
 flask_app/static/upload/*
 flask_app/static/videos/*
 flask_app/.idea
