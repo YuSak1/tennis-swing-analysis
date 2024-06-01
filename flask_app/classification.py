@@ -1,5 +1,4 @@
 from keras.models import load_model
-# from keras.models import Model
 import pandas as pd
 import numpy as np
 
@@ -173,10 +172,10 @@ def classification(mode):
             l_dist.append(dist)
 
         smallest_indices = []
-        for i in range(3):
+        for i in range(10):
             min_index = l_dist.index(min(l_dist))
             smallest_indices.append(min_index)
-            l_dist.pop(min_index)
+            l_dist[min_index] = 10 ** 5
 
         msg_feature_sub = ["Height of your non-dominant hand.",
                            "Height of your dominant hand.",
