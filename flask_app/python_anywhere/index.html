@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>my ML Project</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<header>
+  <div style="text-align: center">
+    Tennis Forehand Analysis
+  </div>
+</header>
+
+<body>
+  <div style="text-align: center">
+    <div  style="text-align: right">
+    <a href= "https://github.com/YuSak1/tennis-swing-analysis/tree/main" alt="Link to GitHub" target="_blank" rel="noopener noreferrer">
+      <img src="/static/github-mark.png" width="35">
+    </a>
+    </div>
+
+    <div class="heading">
+        Do you hit forehand like Federer, Nadal, Djokovic, or Murray?
+    </div>
+    <div class="heading">
+      Upload your video to analyze your forehand swing.
+    </div>
+    <br>
+    <video width="250" autoplay loop muted>
+      <source src="static/videos/Federer_short.mp4" type="video/mp4" />
+    </video>
+    <video width="250" autoplay loop muted>
+      <source src="static/videos/Nadal_short.mp4" type="video/mp4" />
+    </video>
+        <video width="250" autoplay loop muted>
+      <source src="static/videos/Djokovic_short.mp4" type="video/mp4" />
+    </video>
+        <video width="250" autoplay loop muted>
+      <source src="static/videos/Murray_short.mp4" type="video/mp4" />
+    </video>
+
+    <div id="flash" class="flash">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <ul class=flashes>
+          {% for category, message in messages %}
+            <li class="{{ category }}" >{{ message }}</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+      {% endwith %}
+    </div>
+
+    <div class="form">
+      <form method = post enctype = multipart/form-data>
+        <div class="form_sub">
+          <div>
+              <label for="r1">Right-handed：</label>
+              <input type="radio" id="r1" name="radio_hand" value="right_handed" checked>
+          </div>
+          <div>
+              <label for="r2">Left-handed ：</label>
+              <input type="radio" id="r2" name="radio_hand" value="left_handed">
+          </div>
+        </div>
+
+        <div class="form_sub">
+          <div>
+              <label for="r3">Advanced analysis：</label>
+              <input type="radio" id="r3" name="radio_mode" value="advanced" checked>
+          </div>
+          <div>
+              <label for="r4">Quick mode：</label>
+              <input type="radio" id="r4" name="radio_mode" value="quick">
+          </div>
+        </div>
+
+          <input type=file name=file>
+          <input id='loading-button' type=submit value="Upload">
+      </form>
+      <div>*Don't upload confidential information.</div>
+    </div>
+
+    <div class="loading_container">
+      <div id='loading' style='display:none'></div>
+      <div id='loading_msg' style='display:none'>Processing... this may take a few minutes.</div>
+    </div>
+    <script src="/static/script.js"></script>
+
+  </div>
+
+  <div class="list">
+    <div class="requirements">Requirements:</div>
+    <ol>
+      <li>Video must include only forehand. Do not include backhand, serve, or other shots.</li>
+      <li>Video length must be 10-60 seconds, and only the first 10 seconds will be used for analysis.</li>
+      <li>Video must be court level angle and back view.</li>
+      <li>Video quality must be at least 480p.</li>
+      <li>File format must be mp4.</li>
+    </ol>
+  </div>
+
+</body>
+</html>
