@@ -53,12 +53,10 @@ def classification(mode):
     #                       data_swing[:,:,4], data_swing[:,:,5], data_swing[:,:,6], data_swing[:,:,7],
     #                       data_swing[:,:,8], data_swing[:,:,9]])
     #
-    # print('pred: ', pred)
-    #
     # pred_y = np.argmax(pred, axis=1)
     # pred_y = ['f', 'n', 'd', 'm'][pred_y[0]]
-    # print('pred_y: ', pred_y)
 
+    # Instead of getting prediction from model output, calculate the proportion in the n nearest samples
     model_feature = load_model('model_weight/tennis_swing_model_v5_feature.h5', compile=False)
     features = model_feature.predict(
         [data_swing[:, :, 0], data_swing[:, :, 1], data_swing[:, :, 2], data_swing[:, :, 3],
@@ -91,7 +89,7 @@ def classification(mode):
     pred_msg_d = '{:.2f} %'.format((num_d / n_samples) * 100)  # Djokovic
     pred_msg_m = '{:.2f} %'.format((num_m / n_samples) * 100)  # Murray
 
-    # kNN (k=200)
+    # Prediction
     pred_idx = pd.Series([num_f, num_n, num_d, num_m]).idxmax()
     pred_y = ['f', 'n', 'd', 'm'][pred_idx]
     print('pred_y: ', pred_y)
@@ -158,9 +156,9 @@ def classification(mode):
              data_swing[:, :, 4], data_swing[:, :, 5], data_swing[:, :, 6], data_swing[:, :, 7],
              data_swing[:, :, 8], data_swing[:, :, 9]])[0]
         df_feature_sub_input = pd.DataFrame(np.stack([features_sub1_input, features_sub2_input, features_sub3_input,
-                                                          features_sub4_input, features_sub5_input, features_sub6_input,
-                                                          features_sub7_input, features_sub8_input, features_sub9_input,
-                                                          features_sub10_input]))
+                                                      features_sub4_input, features_sub5_input, features_sub6_input,
+                                                      features_sub7_input, features_sub8_input, features_sub9_input,
+                                                      features_sub10_input]))
 
         df_feature_sub_all = pd.read_csv('data/CSV/feature_ext_sub_all.csv').drop('Unnamed: 0', axis=1)
         df_feature_sub_sample = df_feature_sub_all[(df_feature_sub_all['name'] == most_similar_sample)].iloc[:, :-2].astype('float32')

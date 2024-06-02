@@ -185,7 +185,7 @@ def draw_prediction_on_image(
     return image_from_plot
 
 
-# Load MoveNet Thunder
+# Load MoveNet Lightning
 ## Using a lite model
 ## !wget -q -O model.tflite https://tfhub.dev/google/lite-model/movenet/singlepose/lightning/tflite/float16/4?lite-format=tflite
 # input_size = 192
@@ -217,6 +217,7 @@ def draw_prediction_on_image(
 #     keypoints_with_scores = interpreter.get_tensor(output_details[0]['index'])
 #     return keypoints_with_scores
 
+# Load MoveNet Thunder
 module = hub.load("https://tfhub.dev/google/movenet/singlepose/thunder/4")
 input_size = 256
 
