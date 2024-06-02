@@ -51,7 +51,7 @@ def upload_file():
             total_frames = video_capture.get(cv2.CAP_PROP_FRAME_COUNT)
             video_seconds = total_frames // fps
             if video_seconds < 10:
-                flash('Error: Video is too short.', 'failed')
+                flash('Error: Video is too short. It must be longer than 10 seconds.', 'failed')
                 return redirect(request.url)
             elif video_seconds > 1800:
                 flash('Error: Video is too long. Please trim your video.', 'failed')
