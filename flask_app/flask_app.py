@@ -1,13 +1,14 @@
 import os
 from flask import Flask, flash, request, redirect, render_template
-from create_gif import gif
-from pose_detection import pose_detection
-from trim_video import trim_video
-from classification import classification
 import warnings
 import time
 import cv2
 import sys
+
+from create_gif import gif
+from classification import classification
+from pose_detection import pose_detection
+from trim_video import trim_video
 
 
 # Hide warnings
