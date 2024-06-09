@@ -25,13 +25,25 @@ https://yuus.pythonanywhere.com/
 This model process the input video with the following steps:
 1. The upload video is checked if it meets the requirements.
 2. Conver the video into GIF.
-3. Run pose detection to detect the key points nad edges of the body, using MoveNet (https://www.tensorflow.org/hub/tutorials/movenet?hl=ja)
+3. Run pose detection to detect the key points and edges of the body, using MoveNet.
 4. My original model takes the outputs of MoveNet and predicts the similarity to four players.
 5. Using the subparts of my model for feature extraction, it identifies what makes it similar.
 6. Display the results.
 
 ## Model
+This project uses 2 models of deep neural network.
+1. ModelNet is used to detect the key points and edges of the body in a input video. ModelNet detects 17 keypoints of a body such as "right elbow", "left knee", and "right hip". I referred to this tutorial, https://www.tensorflow.org/hub/tutorials/movenet
 
+2. Model for swing analysis (original)
+I developed a model to predict the similarity of the input compared to 4 players. It is also used for feature extraction to identifiy which features make it similar.
+
+The model is composed of 10 sub-models, and each sub-models has the same structure shown on the right side. Each sub-model takes different inputs. The inputs are some features created by calculating distances between some keypoints detected by MoveNet. I named the features as: 
+    1) left_wrist_up, 2) right_wrist_up, 3) right_elbow_distance, 4) right_arm_y, 5) left_arm_y, 6) wrist_y, 7) shoulder_y, 8) left_elbow_distance, 9) wrist_ankle_y, 10) ankle_open
+
+<div align="center">
+    <img src=".github/model.png" width="350">
+    <img src=".github/model_layers.png" width="180">
+</div>
 
 ## Training and Evaluation
 
