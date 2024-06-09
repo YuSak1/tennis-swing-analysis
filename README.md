@@ -42,10 +42,15 @@ The model is composed of 10 sub-models, and each sub-models has the same structu
 
 <div align="center">
     <img src=".github/model.png" width="350">
-    <img src=".github/model_layers.png" width="180">
+    <img src=".github/model_layers.png" width="220">
 </div>
 
 ## Training and Evaluation
+The model is trained on videos on YouTube. The total duration of the training videos is 89 minutes, and the volume of the training data is expanded by taking different windows with strides. After expansion, the toral duration is 1203 mintues.
+
+I trained the model for 120 epochs, and then the validation loss seems to be converged.
+
+The model is evaluaed with cross-validation, and the accuracy is 93%.
 
 ## Future Work
 ### xxx
