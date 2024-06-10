@@ -34,7 +34,7 @@ This model processes the input video with the following steps:
 This project uses 2 models of deep neural network.
 1. ModelNet is used to detect the keypoints and edges of the body in an input video. ModelNet detects 17 keypoints of a body such as "right elbow", "left knee", and "right hip". I referred to this tutorial, https://www.tensorflow.org/hub/tutorials/movenet
 
-2. Model for swing analysis (original)
+2. Model for swing analysis (original).
 I developed a model to predict the similarity of the input compared to 4 players. It is also used for feature extraction to identify which features make it similar.
 
 The model is composed of 10 sub-models, and each sub-model has the same structure shown on the right side. Each sub-model takes different inputs. The inputs are some features created by calculating distances between some keypoints detected by MoveNet. I named the features as: 
