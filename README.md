@@ -38,7 +38,7 @@ This project uses 2 models of deep neural network.
 I developed a model to predict the similarity of the input compared to 4 players. It is also used for feature extraction to identify which features make it similar.
 
 The model is composed of 10 sub-models, and each sub-model has the same structure shown on the right side. Each sub-model takes different inputs. The inputs are some features created by calculating distances between some keypoints detected by MoveNet. I named the features as: 
-    1) left_wrist_up, 2) right_wrist_up, 3) right_elbow_distance, 4) right_arm_y, 5) left_arm_y, 6) wrist_y, 7) shoulder_y, 8) left_elbow_distance, 9) wrist_ankle_y, 10) ankle_open
+    1) left_wrist_up, 2) right_wrist_up, 3) right_elbow_distance, 4) right_arm_y, 5) left_arm_y, 6) wrist_y, 7) shoulder_y, 8) left_elbow_distance, 9) wrist_ankle_y, 10) ankle_open. I selected these 10 features from many candidates by testing the degree of contribution to the accuracy and selecting ones with the best accuracy.
 
 <div align="center">
     <img src=".github/model.png" width="350">
