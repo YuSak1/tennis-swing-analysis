@@ -53,4 +53,8 @@ I trained the model for 120 epochs, and then the validation loss converged.
 The model is evaluated with cross-validation, and the accuracy is 93%.
 
 ## Future Work
-### xxx
+- Add more players (e.g., top 10 players in ATP).
+- Create a model for female players.
+- Show more convincing results.
+- Provide users with an advise how to improve the forehand.
+- Enable real time processing.
