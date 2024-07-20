@@ -3,7 +3,7 @@ from moviepy.video.fx.mirror_x import mirror_x
 import time
 import os
 
-# True for Nadal
+# True for left handed players (Nadal)
 lefty = False
 
 def create_gif(input_path, output_path, lefty):
