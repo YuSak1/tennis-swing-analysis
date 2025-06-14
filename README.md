@@ -1,4 +1,4 @@
-# tennis-swing-analysis
+# Tennis Swing Analysis
 
 ## About The Project
 <div align="center">
