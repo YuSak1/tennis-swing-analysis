@@ -1,3 +1,5 @@
+# TENNIS-SWING-ANALYSIS/flask_app/trim_video.py
+
 import cv2
 import math
 
@@ -28,7 +30,7 @@ def trim_video():
         img_arr.append(img)
         frame_index += 1
 
-    fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')
+    fourcc = cv2.VideoWriter_fourcc("m", "p", "4", "v")
     video = None
     # Output file
     video_file_name = "./static/upload/video_trimmed.mp4"
