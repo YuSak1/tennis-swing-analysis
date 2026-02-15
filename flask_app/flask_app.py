@@ -10,6 +10,7 @@ from classification import classification
 from pose_detection import pose_detection
 from trim_video import trim_video
 
+os.environ['KMP_DUPLICATE_LIB_OK']='TRUE'
 
 # Hide warnings
 warnings.simplefilter('ignore')
@@ -62,9 +63,9 @@ def upload_file():
             filepath = os.path.join(UPLOAD_FOLDER, "video_trimmed.mp4")
             hand = request.form.get('radio_hand')
             if hand == 'right_handed':
-                is_lefty=False
+                is_lefty = False
             elif hand == 'left_handed':
-                is_lefty=True
+                is_lefty = True
             gif(filepath, "static/upload/video.gif", lefty=is_lefty)
 
             # Run pose-detection
@@ -96,3 +97,6 @@ def upload_file():
 # Run app
 if __name__ == '__main__':
     sys.exit(app.run())
+
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'FALSE'
+print("Finished.")

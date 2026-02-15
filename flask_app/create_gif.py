@@ -7,13 +7,13 @@ def gif(input_file, output_path, lefty=False):
     # Read video file
     clip = VideoFileClip(input_file)
     # Video size
-    clip = clip.resize(width=200)
+    clip = clip.resize(width=200)  # width=200
 
     # mirror if lefty
     if lefty:
         clip = mirror_x(clip)
 
-    clip.write_gif(output_path, fps=9, loop=0)
+    clip.write_gif(output_path, fps=9, loop=0)  # fps=9, loop=0
     clip.close()
     print("GIF is created.")
 
