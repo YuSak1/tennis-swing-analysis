@@ -1,3 +1,5 @@
+### v2 of this project is under development -> https://github.com/YuSak1/tennis-swing-analysis-v2
+
 # Tennis Swing Analysis
 
 ## About The Project
