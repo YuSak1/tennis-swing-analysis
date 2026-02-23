@@ -15,7 +15,7 @@ There are a variety of play styles among the top professional tennis players. Fo
 In this project, I developed a model that analyzes videos of forehand shots, compares them to 4 professional players, and highlights similar features.
 
 ## Usage
-The Flask web app is deployed on PythonAnywhere → https://yuus.pythonanywhere.com/
+~~The Flask web app is deployed on PythonAnywhere~~ Migrating to v2
 
 1. Select whether you are right-handed or left-handed.
 2. Select "Advanced analysis" or "Quick mode". "Advanced analysis" is recommended.
